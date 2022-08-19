@@ -144,8 +144,7 @@
 							"folder": {
 								"value": "@pipeline().parameters.folder_csv",
 								"type": "Expression"
-							},
-							"": "hola"
+							}
 						}
 					}
 				],
@@ -156,6 +155,92 @@
 						"parameters": {
 							"file_name": {
 								"value": "@pipeline().parameters.sites",
+								"type": "Expression"
+							},
+							"folder": {
+								"value": "@pipeline().parameters.folder_parquet",
+								"type": "Expression"
+							}
+						}
+					}
+				]
+			},
+			{
+				"name": "races_csv_to_parquet",
+				"type": "Copy",
+				"dependsOn": [
+					{
+						"activity": "sites_csv_to_parquet",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "DelimitedTextSource",
+						"storeSettings": {
+							"type": "AzureBlobFSReadSettings",
+							"recursive": true,
+							"modifiedDatetimeStart": "2022-08-19T00:00:00.094Z",
+							"modifiedDatetimeEnd": "2022-08-19T00:00:00.956Z",
+							"wildcardFileName": "*.csv",
+							"enablePartitionDiscovery": true
+						},
+						"formatSettings": {
+							"type": "DelimitedTextReadSettings"
+						}
+					},
+					"sink": {
+						"type": "ParquetSink",
+						"storeSettings": {
+							"type": "AzureBlobFSWriteSettings"
+						},
+						"formatSettings": {
+							"type": "ParquetWriteSettings"
+						}
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "races_csv",
+						"type": "DatasetReference",
+						"parameters": {
+							"file_name": {
+								"value": "@pipeline().parameters.races",
+								"type": "Expression"
+							},
+							"folder": {
+								"value": "@pipeline().parameters.folder_csv",
+								"type": "Expression"
+							}
+						}
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "races_parquet",
+						"type": "DatasetReference",
+						"parameters": {
+							"file_name": {
+								"value": "@pipeline().parameters.races",
 								"type": "Expression"
 							},
 							"folder": {
@@ -183,6 +268,10 @@
 			"cargas": {
 				"type": "string",
 				"defaultValue": "cargas.csv"
+			},
+			"races": {
+				"type": "string",
+				"defaultValue": "races.csv"
 			}
 		},
 		"annotations": []
