@@ -139,9 +139,10 @@
 								"type": "Expression"
 							},
 							"folder": {
-								"value": "@pipeline().parameters.folder_parquet",
+								"value": "@pipeline().parameters.folder_csv",
 								"type": "Expression"
-							}
+							},
+							"": "-"
 						}
 					}
 				],
