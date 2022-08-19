@@ -1,0 +1,29 @@
+{
+	"name": "sites_csv",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "input_datalake",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileName": "sitios.csv",
+				"folderPath": "files_csvs",
+				"fileSystem": "files-csvs"
+			},
+			"columnDelimiter": ";",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": [
+			{
+				"name": "ID;ID_Name;Grupo;Zona;Area ;Director;Asesor;Dirección;Ciudad;Provincia",
+				"type": "String"
+			}
+		]
+	}
+}
