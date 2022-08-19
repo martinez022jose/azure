@@ -23,7 +23,7 @@
 					"type": "Expression"
 				},
 				"folderPath": {
-					"value": "@concat(dataset().folder)",
+					"value": "@dataset().folder",
 					"type": "Expression"
 				},
 				"fileSystem": "files-csvs"

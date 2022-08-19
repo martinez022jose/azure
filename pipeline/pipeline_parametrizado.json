@@ -39,6 +39,104 @@
 					"enableStaging": false,
 					"translator": {
 						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"name": "ID",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "ID",
+									"type": "String",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"name": "ID_Name",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "ID_Name",
+									"type": "String",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"name": "Fecha",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "Fecha",
+									"type": "String",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"name": "Nro_Maquina",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "Nro_Maquina",
+									"type": "String",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"name": "Funciono",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "Funciono",
+									"type": "String",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"name": "CantidadCargas",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "CantidadCargas",
+									"type": "String",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"name": "Volumen_m3",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "Volumen_m3",
+									"type": "String",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"name": "Hora_fin",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "Hora_fin",
+									"type": "String",
+									"physicalType": "UTF8"
+								}
+							}
+						],
 						"typeConversion": true,
 						"typeConversionSettings": {
 							"allowDataTruncation": true,
@@ -250,6 +348,81 @@
 						}
 					}
 				]
+			},
+			{
+				"name": "results_json_to_parquet",
+				"type": "Copy",
+				"dependsOn": [
+					{
+						"activity": "races_csv_to_parquet",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "JsonSource",
+						"storeSettings": {
+							"type": "AzureBlobFSReadSettings",
+							"recursive": true,
+							"enablePartitionDiscovery": false
+						},
+						"formatSettings": {
+							"type": "JsonReadSettings"
+						}
+					},
+					"sink": {
+						"type": "ParquetSink",
+						"storeSettings": {
+							"type": "AzureBlobFSWriteSettings"
+						},
+						"formatSettings": {
+							"type": "ParquetWriteSettings"
+						}
+					},
+					"enableStaging": false
+				},
+				"inputs": [
+					{
+						"referenceName": "results_json",
+						"type": "DatasetReference",
+						"parameters": {
+							"file_name": {
+								"value": "@pipeline().parameters.results",
+								"type": "Expression"
+							},
+							"folder": {
+								"value": "@pipeline().parameters.folder_csv",
+								"type": "Expression"
+							}
+						}
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "results_parquet",
+						"type": "DatasetReference",
+						"parameters": {
+							"file_name": {
+								"value": "@pipeline().parameters.results",
+								"type": "Expression"
+							},
+							"folder": {
+								"value": "@pipeline().parameters.folder_parquet",
+								"type": "Expression"
+							}
+						}
+					}
+				]
 			}
 		],
 		"parameters": {
@@ -272,6 +445,10 @@
 			"races": {
 				"type": "string",
 				"defaultValue": "races.csv"
+			},
+			"results": {
+				"type": "string",
+				"defaultValue": "results.csv"
 			}
 		},
 		"annotations": []

@@ -1,15 +1,15 @@
 {
-	"name": "cargas_parquet",
+	"name": "results_parquet",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "input_datalake",
 			"type": "LinkedServiceReference"
 		},
 		"parameters": {
-			"folder": {
+			"file_name": {
 				"type": "string"
 			},
-			"file_name": {
+			"folder": {
 				"type": "string"
 			}
 		},
@@ -19,11 +19,11 @@
 			"location": {
 				"type": "AzureBlobFSLocation",
 				"fileName": {
-					"value": "@concat(dataset().file_name, '_' ,formatDateTime(utcNow()))",
+					"value": "@dataset().file_name",
 					"type": "Expression"
 				},
 				"folderPath": {
-					"value": "@concat(dataset().folder)",
+					"value": "@dataset().folder",
 					"type": "Expression"
 				},
 				"fileSystem": "files-csvs"
