@@ -132,20 +132,26 @@
 				"inputs": [
 					{
 						"referenceName": "sites_csv",
-						"type": "DatasetReference"
+						"type": "DatasetReference",
+						"parameters": {
+							"file_name": {
+								"value": "@pipeline().parameters.sites",
+								"type": "Expression"
+							}
+						}
 					}
 				],
 				"outputs": [
 					{
-						"referenceName": "cargas_parquet",
+						"referenceName": "sites_parquet",
 						"type": "DatasetReference",
 						"parameters": {
-							"folder": {
-								"value": "@pipeline().parameters.folder_parquet",
-								"type": "Expression"
-							},
 							"file_name": {
 								"value": "@pipeline().parameters.sites",
+								"type": "Expression"
+							},
+							"folder": {
+								"value": "@pipeline().parameters.folder_parquet",
 								"type": "Expression"
 							}
 						}
