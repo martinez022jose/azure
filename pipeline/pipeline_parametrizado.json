@@ -137,6 +137,10 @@
 							"file_name": {
 								"value": "@pipeline().parameters.sites",
 								"type": "Expression"
+							},
+							"folder": {
+								"value": "@pipeline().parameters.folder_parquet",
+								"type": "Expression"
 							}
 						}
 					}
