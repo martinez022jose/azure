@@ -23,7 +23,7 @@
 					"type": "Expression"
 				},
 				"folderPath": {
-					"value": "@dataset().folder",
+					"value": "@concat(dataset().folder)",
 					"type": "Expression"
 				},
 				"fileSystem": "files-csvs"
@@ -35,7 +35,35 @@
 		},
 		"schema": [
 			{
-				"name": "ID;ID_Name;Fecha;Nro_Maquina;Funciono;CantidadCargas;Volumen (m3);Hora fin",
+				"name": "ID",
+				"type": "String"
+			},
+			{
+				"name": "ID_Name",
+				"type": "String"
+			},
+			{
+				"name": "Fecha",
+				"type": "String"
+			},
+			{
+				"name": "Nro_Maquina",
+				"type": "String"
+			},
+			{
+				"name": "Funciono",
+				"type": "String"
+			},
+			{
+				"name": "CantidadCargas",
+				"type": "String"
+			},
+			{
+				"name": "Volumen_m3",
+				"type": "String"
+			},
+			{
+				"name": "Hora_fin",
 				"type": "String"
 			}
 		]

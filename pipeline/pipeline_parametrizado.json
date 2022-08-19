@@ -20,7 +20,8 @@
 						"storeSettings": {
 							"type": "AzureBlobFSReadSettings",
 							"recursive": true,
-							"enablePartitionDiscovery": false
+							"wildcardFileName": "*.csv",
+							"enablePartitionDiscovery": true
 						},
 						"formatSettings": {
 							"type": "DelimitedTextReadSettings"
@@ -48,13 +49,33 @@
 				"inputs": [
 					{
 						"referenceName": "cargas_csv",
-						"type": "DatasetReference"
+						"type": "DatasetReference",
+						"parameters": {
+							"file_name": {
+								"value": "@pipeline().parameters.cargas",
+								"type": "Expression"
+							},
+							"folder": {
+								"value": "@pipeline().parameters.folder_csv",
+								"type": "Expression"
+							}
+						}
 					}
 				],
 				"outputs": [
 					{
 						"referenceName": "cargas_parquet",
-						"type": "DatasetReference"
+						"type": "DatasetReference",
+						"parameters": {
+							"folder": {
+								"value": "@pipeline().parameters.folder_parquet",
+								"type": "Expression"
+							},
+							"file_name": {
+								"value": "@pipeline().parameters.cargas",
+								"type": "Expression"
+							}
+						}
 					}
 				]
 			}
