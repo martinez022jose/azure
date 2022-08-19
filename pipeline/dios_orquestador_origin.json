@@ -1,0 +1,129 @@
+{
+	"name": "dios_orquestador_origin",
+	"properties": {
+		"activities": [
+			{
+				"name": "execute_pipeline_parametrizado",
+				"type": "ExecutePipeline",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "pipeline_parametrizado",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true,
+					"parameters": {
+						"folder_csv": {
+							"value": "@pipeline().parameters.folder_csv",
+							"type": "Expression"
+						},
+						"folder_parquet": {
+							"value": "@pipeline().parameters.folder_parquet",
+							"type": "Expression"
+						},
+						"sites": {
+							"value": "@pipeline().parameters.sites",
+							"type": "Expression"
+						},
+						"cargas": {
+							"value": "@pipeline().parameters.cargas",
+							"type": "Expression"
+						},
+						"races": {
+							"value": "@pipeline().parameters.races",
+							"type": "Expression"
+						},
+						"results": {
+							"value": "@pipeline().parameters.results",
+							"type": "Expression"
+						}
+					}
+				}
+			},
+			{
+				"name": "mail_successfull",
+				"type": "WebActivity",
+				"dependsOn": [
+					{
+						"activity": "execute_pipeline_parametrizado",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"url": "https://prod-14.eastus.logic.azure.com:443/workflows/c4b0809c37db40218820b160ad846f1e/triggers/manual/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=-pSjmDZjyZkmg_NIVoVLhaUt-1AWZqW169Z-n_5uoX8",
+					"method": "POST",
+					"body": {
+						"value": "{\n    \"title\":\"Pipeline succesfull\",\n    \"message\":\"Demo ok\",\"color\":\"GREEN\",\n    \"dataFactoryName\":\"@{pipeline().DataFactory}\",\n    \"pipelineName\":\"@{pipeline().Pipeline}\",\n    \"pipelineRunId\":\"@{pipeline().RunId}\",\n    \"time\":\"@{utcnow()}\"\n}",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "mail_error",
+				"type": "WebActivity",
+				"dependsOn": [
+					{
+						"activity": "execute_pipeline_parametrizado",
+						"dependencyConditions": [
+							"Failed"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"url": "https://prod-14.eastus.logic.azure.com:443/workflows/c4b0809c37db40218820b160ad846f1e/triggers/manual/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=-pSjmDZjyZkmg_NIVoVLhaUt-1AWZqW169Z-n_5uoX8",
+					"method": "POST",
+					"body": {
+						"value": "{\n    \"title\":\"Pipeline no successfull\",\n    \"message\":\"@{activity('execute_pipeline_parametrizado').error.message}\",\n    \"color\":\"RED\",\n    \"dataFactoryName\":\"@{pipeline().DataFactory}\",\n    \"pipelineName\":\"@{pipeline().Pipeline}\",\n    \"pipelineRunId\":\"@{pipeline().RunId}\",\n    \"time\":\"@{utcNow()}\"\n}",
+						"type": "Expression"
+					}
+				}
+			}
+		],
+		"parameters": {
+			"folder_csv": {
+				"type": "string",
+				"defaultValue": "files_csvs"
+			},
+			"folder_parquet": {
+				"type": "string",
+				"defaultValue": "files_parquet"
+			},
+			"sites": {
+				"type": "string",
+				"defaultValue": "sitios.csv"
+			},
+			"cargas": {
+				"type": "string",
+				"defaultValue": "cargas.csv"
+			},
+			"races": {
+				"type": "string",
+				"defaultValue": "races.csv"
+			},
+			"results": {
+				"type": "string",
+				"defaultValue": "results.json"
+			}
+		},
+		"annotations": []
+	}
+}

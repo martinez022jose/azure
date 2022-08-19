@@ -20,7 +20,6 @@
 						"storeSettings": {
 							"type": "AzureBlobFSReadSettings",
 							"recursive": true,
-							"wildcardFileName": "*.csv",
 							"enablePartitionDiscovery": true
 						},
 						"formatSettings": {
@@ -448,7 +447,7 @@
 			},
 			"results": {
 				"type": "string",
-				"defaultValue": "results.csv"
+				"defaultValue": "results.json"
 			}
 		},
 		"annotations": []

@@ -27,7 +27,8 @@
 					"type": "Expression"
 				},
 				"fileSystem": "files-csvs"
-			}
+			},
+			"encodingName": "UTF-8"
 		},
 		"schema": {
 			"type": "object",
